@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
         body: ListView(
           children: [
             Image.asset(
-              'images/lake.jpg',
+              'images/lake.jpecdg',
               width: 600,
               height: 240,
               fit: BoxFit.cover,
