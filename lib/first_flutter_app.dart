@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
@@ -8,7 +10,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'List of Homie Names',
-      home: RandomWords()
+      theme: ThemeData(
+        primaryColor: Colors.blueGrey,
+      ),
+      home: TimerRow()
     );
   }
 }
@@ -16,6 +21,11 @@ class MyApp extends StatelessWidget {
 class RandomWords extends StatefulWidget {
   @override
   _RandomWordsState createState() => _RandomWordsState();
+}
+
+class TimerRow extends StatefulWidget {
+  @override
+  _TimerRowState createState() => _TimerRowState();
 }
 
 class _RandomWordsState extends State<RandomWords> {
@@ -43,7 +53,7 @@ class _RandomWordsState extends State<RandomWords> {
         pair.asPascalCase,
         style:_biggerFont,
       ),
-    trailing: Icon(
+      trailing: Icon(
       alreadySaved ? Icons.favorite : Icons.favorite_border,
       color: alreadySaved ? Colors.red : null,
       ),
@@ -101,6 +111,68 @@ class _RandomWordsState extends State<RandomWords> {
       body: _buildSuggestions(),
     );
   }
+}
+
+class _TimerRowState extends State<TimerRow>{
+   List<String> _exercises = <String>[];
+
+
+  void _seeActive(){
+    throw new UnimplementedError();
+  }
+
+  Widget _buildTopRow(String value){
+    int time = 60;
+    return ListTile(
+      title: Text(
+        value
+      ),
+      trailing: Text(
+          time.toString()
+      ),
+      onTap: (){
+        while(time>0){
+          sleep(new Duration(seconds: 1));
+          time--;
+        }
+      },
+    );
+
+    //header for the exercise with info about remaining sets
+    return null;
+  }
+
+  Widget _buildBottomRow(){
+    //bottom row which will contain timer inited to 60 s
+  }
+
+  Widget _buildWorkout(){
+    _exercises.add("Shrugs");
+    _exercises.add("Dips");
+    _exercises.add("value");
+
+    return ListView.builder(
+        padding: EdgeInsets.all(16),
+        itemCount: _exercises.length,
+        itemBuilder: (context, i){
+          return _buildTopRow(_exercises[i]);
+
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Timer Row demos'),
+        actions:[
+          IconButton(icon: Icon(Icons.list), onPressed: _seeActive),
+        ]
+      ),
+      body: _buildWorkout(),
+    );
+  }
+
 }
 
 
