@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'Exercise.dart';
 
 void main() => runApp(MyApp());
 
@@ -114,28 +115,43 @@ class _RandomWordsState extends State<RandomWords> {
 }
 
 class _TimerRowState extends State<TimerRow>{
-   List<String> _exercises = <String>[];
+   List<Exercise> _exercises = <Exercise>[];
 
+   @override
+   void initState(){
+     super.initState();
+     _exercises.clear();
+     _exercises.add(new Exercise.noTime("Shrugs"));
+   }
 
-  void _seeActive(){
-    throw new UnimplementedError();
+  void _addExercise(){
+     setState(() {
+       _exercises.add(new Exercise.noTime("dummy"));
+     });
   }
 
-  Widget _buildTopRow(String value){
-    int time = 60;
+  void _timerUpdate(Exercise exercise){
+      int tmp = exercise.getTime();
+      while(tmp>=0){
+        sleep(Duration(seconds: 1));
+        tmp-=1;
+        exercise.setTime(tmp);
+        setState(() {
+          _exercises.remove(exercise);
+          _exercises.insert(0, exercise);
+        });
+      }
+
+  }
+
+  Widget _buildTopRow(Exercise exercise){
     return ListTile(
-      title: Text(
-        value
-      ),
-      trailing: Text(
-          time.toString()
-      ),
+      title: exercise.getName(),
+      trailing: Text(exercise.getTime().toString()),
       onTap: (){
-        while(time>0){
-          sleep(new Duration(seconds: 1));
-          time--;
-        }
-      },
+        debugPrint("In onTap");
+        _timerUpdate(exercise);
+        },
     );
 
     //header for the exercise with info about remaining sets
@@ -147,9 +163,6 @@ class _TimerRowState extends State<TimerRow>{
   }
 
   Widget _buildWorkout(){
-    _exercises.add("Shrugs");
-    _exercises.add("Dips");
-    _exercises.add("value");
 
     return ListView.builder(
         padding: EdgeInsets.all(16),
@@ -166,7 +179,7 @@ class _TimerRowState extends State<TimerRow>{
       appBar: AppBar(
         title: Text('Timer Row demos'),
         actions:[
-          IconButton(icon: Icon(Icons.list), onPressed: _seeActive),
+          IconButton(icon: Icon(Icons.add), onPressed: _addExercise),
         ]
       ),
       body: _buildWorkout(),
