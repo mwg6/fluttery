@@ -121,38 +121,18 @@ class _TimerRowState extends State<TimerRow>{
    void initState(){
      super.initState();
      _exercises.clear();
-     _exercises.add(new Exercise.noTime("Shrugs"));
+     _exercises.add(Exercise("Shrugs"));
    }
 
   void _addExercise(){
      setState(() {
-       _exercises.add(new Exercise("dummy"));
+       _exercises.add(new Exercise("Hugs"));
      });
   }
 
-  void _timerUpdate(Exercise exercise){
-      int tmp = exercise.getTime();
-      while(tmp>=0){
-        sleep(Duration(seconds: 1));
-        tmp-=1;
-        exercise.setTime(tmp);
-        setState(() {
-          _exercises.remove(exercise);
-          _exercises.insert(0, exercise);
-        });
-      }
-
-  }
 
   Widget _buildTopRow(Exercise exercise){
-    return ListTile(
-      title: exercise.getName(),
-      trailing: Text(exercise.getTime().toString()),
-      onTap: (){
-        debugPrint("In onTap");
-        _timerUpdate(exercise);
-        },
-    );
+    return exercise;
 
     //header for the exercise with info about remaining sets
     return null;
