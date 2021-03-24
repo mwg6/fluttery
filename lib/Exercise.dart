@@ -1,39 +1,46 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 const int defaultTimerValue = 5;
 
-class Exercise {
+class Exercise extends StatefulWidget {
+  _ExerciseState createState() => _ExerciseState();
+}
+
+class _ExerciseState extends State<Exercise> {
   String name;
-  int time;
+  String time;
 
-  Exercise(String name, int time){
-   this.name = name;
-   this.time = time;
-  }
+  Timer t;
 
-  Exercise.noTime(String name){
+  Exercise(String name) {
     this.name = name;
-    this.time = defaultTimerValue;
-  }
 
-  Text getName(){
-    return Text(name);
-  }
+    this.t = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        time = DateTime
+            .now()
+            .second
+            .toString();
+      });
+    });
 
-  int getTime(){
-    return time;
-  }
 
-  void setTime(int time){
-    this.time = time;
-  }
-
-  void startTime(){
-    while(time>=0){
-      sleep(Duration(seconds: 1));
-      time-=1;
+    Text getName() {
+      return Text(name);
     }
+
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(name),
+      trailing: Text(time),
+    );
+  }
+
 }

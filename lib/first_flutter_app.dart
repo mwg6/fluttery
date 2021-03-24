@@ -126,7 +126,7 @@ class _TimerRowState extends State<TimerRow>{
 
   void _addExercise(){
      setState(() {
-       _exercises.add(new Exercise.noTime("dummy"));
+       _exercises.add(new Exercise("dummy"));
      });
   }
 
